@@ -150,12 +150,12 @@ void Get_Chassis_Keyboard()
 	//×óÓÒÆ½ÒÆ
 	if(DBUS.PC.Keyboard & KEY_A)
 	{
-		keyboard.vy = current_speed_y + (-5000 -current_speed_y) * ramp_calc(&lr_ramp);			
+		keyboard.vy = current_speed_y + (-6000 -current_speed_y) * ramp_calc(&lr_ramp);			
 		ramp_init(&slow_ramp,2000);
 	}
 	else if(DBUS.PC.Keyboard & KEY_D)
 	{
-		keyboard.vy = current_speed_y +(5000 -current_speed_y) * ramp_calc(&lr_ramp);
+		keyboard.vy = current_speed_y +(6000 -current_speed_y) * ramp_calc(&lr_ramp);
 		ramp_init(&slow_ramp,2000);
 	}
 	else

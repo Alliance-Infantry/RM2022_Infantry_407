@@ -71,5 +71,5 @@ void Cover_PWM_Init()
 void Cover_Init()
 {
 	Cover_PWM_Init();
-	COVER_ON;
+	COVER_OFF;
 }

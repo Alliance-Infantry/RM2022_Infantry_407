@@ -112,7 +112,7 @@ void Gimbal_Follow_Control()
  */
 void Gimbal_AutoAim_Control()
 {
-		Pitch_Aim_Angle += DBUS.RC.ch3 / 50.0f - DBUS.PC.Y / 10.0f;
+		Pitch_Aim_Angle += DBUS.RC.ch3 / 50.0f - DBUS.PC.Y / 100.0f;
 		Pitch_Aim_Angle +=NUC_Data.pit_offset / 1.0f;
 	
 	

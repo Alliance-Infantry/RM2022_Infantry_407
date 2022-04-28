@@ -83,10 +83,10 @@ void chassis_task(void *p_arg)
 		}
 		
 		//底盘速度解算
-//		Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);
+		Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);
 		//舵轮速度解算
 //			Chassis_Rudder_NonNearby_Cal(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw); //无就近原则
-			Chassis_Rudder_Nearby_Cal(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw); //就近原则
+//			Chassis_Rudder_Nearby_Cal(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw); //就近原则
 		
 		//安装了电容
 		if(SuperCap_Signal > 0)
@@ -166,14 +166,14 @@ void chassis_task(void *p_arg)
  */
 void Chassis_Power_Limit()
 {
-//		//底盘功率控制
-//		if(power_heat_data.chassis_power_buffer < 60)
-//		{
-//			for(int i =0;i<4;i++)
-//			{
-//				Chassis_Speed.wheel_speed[i] *= power_heat_data.chassis_power_buffer/60.0f;
-//			}
-//		}	
+		//底盘功率控制
+		if(power_heat_data.chassis_power_buffer < 60)
+		{
+			for(int i =0;i<4;i++)
+			{
+				Chassis_Speed.wheel_speed[i] *= power_heat_data.chassis_power_buffer/60.0f;
+			}
+		}	
 }
 
 

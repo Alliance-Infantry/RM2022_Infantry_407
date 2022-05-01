@@ -511,7 +511,7 @@ void CAN1_TX_SuperCap(void)
 {
 	CanTxMsg CAN1_Tx_Message;
 	
-	if(SuperCap_Info.id == 0x210)
+	if(SuperCap_Info.id == 0x211)
 	{
 		//SuperCap（雾列控制）
 		CAN1_Tx_Message.IDE = CAN_ID_STD;                                               //标准帧

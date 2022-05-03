@@ -27,7 +27,7 @@ Project File Date:  04/28/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Soft\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Infantry'
-compiling can_handle.c...
+compiling chassis_task.c...
 ..\CORE\core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
         #define __FPU_USED       1U
 ..\USER\main.h(91): warning:  #1-D: last line of file ends without a newline
@@ -52,8 +52,6 @@ compiling can_handle.c...
   void gimbal_task_create();
 ..\TASK\gimbal_task.h(16): warning:  #1-D: last line of file ends without a newline
   #endif
-..\TASK\chassis_task.h(31): warning:  #1295-D: Deprecated declaration chassis_task_create - give arg types
-  void chassis_task_create();
 ..\TASK\chassis_task.h(34): warning:  #1-D: last line of file ends without a newline
   #endif
 ..\TASK\ui_task.h(5): warning:  #1295-D: Deprecated declaration ui_task_create - give arg types
@@ -130,9 +128,9 @@ compiling can_handle.c...
   void BMI088_Get_Data();
 ..\HARDWARE\bmi088driver.h(105): warning:  #1-D: last line of file ends without a newline
   #endif
-..\HARDWARE\rudder.h(26): warning:  #1295-D: Deprecated declaration Rudder_Init - give arg types
+..\HARDWARE\rudder.h(36): warning:  #1295-D: Deprecated declaration Rudder_Init - give arg types
   void Rudder_Init();
-..\HARDWARE\rudder.h(28): warning:  #1-D: last line of file ends without a newline
+..\HARDWARE\rudder.h(38): warning:  #1-D: last line of file ends without a newline
   #endif
 ..\HARDWARE\referee_info.h(242): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -152,17 +150,55 @@ compiling can_handle.c...
   #endif
 ..\USER\main.h(91): warning:  #1-D: last line of file ends without a newline
   #endif
-..\HARDWARE\can_handle.h(55): warning:  #1-D: last line of file ends without a newline
+..\TASK\chassis_task.h(31): warning:  #1295-D: Deprecated declaration chassis_task_create - give arg types
+  void chassis_task_create();
+..\TASK\chassis_task.h(34): warning:  #1-D: last line of file ends without a newline
   #endif
-..\HARDWARE\can_handle.c(194): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  					SuperCap_Info.Low_Filter_Vot = 0.3*SuperCap_Info.CapVot + (1-0.3)*SuperCap_Info.Low_Filter_Vot; //超级电容电压低通滤波值,滤波系数0.3
-..\HARDWARE\can_handle.c(591): warning:  #1-D: last line of file ends without a newline
+..\TASK\chassis_task.c(3): warning:  #1295-D: Deprecated declaration Chassis_Follow_Control - give arg types
+  void Chassis_Follow_Control();
+..\TASK\chassis_task.c(4): warning:  #1295-D: Deprecated declaration Chassis_Stop_Control - give arg types
+  void Chassis_Stop_Control();
+..\TASK\chassis_task.c(5): warning:  #1295-D: Deprecated declaration Chassis_Rotate_Control - give arg types
+  void Chassis_Rotate_Control();
+..\TASK\chassis_task.c(40): warning:  #1295-D: Deprecated declaration Chassis_Power_Limit - give arg types
+  void Chassis_Power_Limit();
+..\TASK\chassis_task.c(41): warning:  #1295-D: Deprecated declaration Chassis_SuperCap_Control - give arg types
+  void Chassis_SuperCap_Control();
+..\TASK\chassis_task.c(102): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				if(SuperCap_Info.CapVot < 15.0)
+..\TASK\chassis_task.c(216): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if(SuperCap_Info.Low_Filter_Vot < 16.0)
+..\TASK\chassis_task.c(226): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		power_limit = (SuperCap_Info.Low_Filter_Vot - 10.0) / (SuperCap_Info.InputVot - 10.0);
+..\TASK\chassis_task.c(226): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		power_limit = (SuperCap_Info.Low_Filter_Vot - 10.0) / (SuperCap_Info.InputVot - 10.0);
+..\TASK\chassis_task.c(228): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(power_limit >= 1.0)
+..\TASK\chassis_task.c(515): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(Rudder_Data.XYZ_Angle[i] > 180.0*ANGLE_TO_RAD)
+..\TASK\chassis_task.c(517): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle[i] = Rudder_Data.XYZ_Angle[i] - 360.0*ANGLE_TO_RAD;
+..\TASK\chassis_task.c(521): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle[i] = Rudder_Data.XYZ_Angle[i] + 360.0*ANGLE_TO_RAD;
+..\TASK\chassis_task.c(530): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(Rudder_Data.XYZ_Angle[i] - Rudder_Data.XYZ_Angle_Current[i] >= 180.0 * ANGLE_TO_RAD)
+..\TASK\chassis_task.c(533): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle[i] - 360.0*ANGLE_TO_RAD;
+..\TASK\chassis_task.c(539): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle[i] + 360.0*ANGLE_TO_RAD;			
+..\TASK\chassis_task.c(552): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] > 90.0*ANGLE_TO_RAD)
+..\TASK\chassis_task.c(554): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] - 180.0*ANGLE_TO_RAD;
+..\TASK\chassis_task.c(559): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] + 180.0*ANGLE_TO_RAD;			
+..\TASK\chassis_task.c(602): warning:  #1-D: last line of file ends without a newline
   }
-..\HARDWARE\can_handle.c: 65 warnings, 0 errors
+..\TASK\chassis_task.c: 83 warnings, 0 errors
 linking...
-Program Size: Code=52882 RO-data=1902 RW-data=728 ZI-data=84176  
+Program Size: Code=57242 RO-data=4274 RW-data=720 ZI-data=84336  
 FromELF: creating hex file...
-".\Objects\RM2022_Infantry_407.axf" - 0 Error(s), 65 Warning(s).
+".\Objects\RM2022_Infantry_407.axf" - 0 Error(s), 83 Warning(s).
 
 <h2>Software Packages used:</h2>
 

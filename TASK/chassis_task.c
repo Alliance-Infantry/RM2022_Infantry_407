@@ -82,7 +82,7 @@ void chassis_task(void *p_arg)
 		}
 		
 		//底盘速度解算
-		//Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);
+//		Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);
 		//舵轮速度解算
 		Chassis_Rudder_Nearby_Cal(rc.vx + keyboard.vx,rc.vy + keyboard.vy,0); //就近原则
 		
@@ -446,22 +446,22 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 	
 	//XY平面初始速度夹角 y除以x
 	//弧度（-PI -- PI）
-//	if(vx == 0)
-//	{
-//		if(vy > 0)
-//		{
-//			Rudder_Data.XY_Angle_Origin = 90*ANGLE_TO_RAD;
-//		}
-//		else if(vy < 0)
-//		{
-//			Rudder_Data.XY_Angle_Origin = -90*ANGLE_TO_RAD;			
-//		}
-//		else
-//		{
-//			Rudder_Data.XY_Angle_Origin = 0;					
-//		}
-//	}
-//	else
+	if(vx == 0)
+	{
+		if(vy > 0)
+		{
+			Rudder_Data.XY_Angle_Origin = 90*ANGLE_TO_RAD;
+		}
+		else if(vy < 0)
+		{
+			Rudder_Data.XY_Angle_Origin = -90*ANGLE_TO_RAD;			
+		}
+		else if(vy == 0)
+		{
+			Rudder_Data.XY_Angle_Origin = 0;					
+		}
+	}
+	else
 	{
 		Rudder_Data.XY_Angle_Origin = atan2f(vy,vx);				
 	}
@@ -495,6 +495,7 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 		Rudder_Data.XYZ_Angle_A[i] = Chassis_Rotate_Base_Speed * (Rudder_Data.Z_Angle_Sin) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Sin;
 		Rudder_Data.XYZ_Angle_B[i] = Chassis_Rotate_Base_Speed * (Rudder_Data.Z_Angle_Cos) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Cos;
 		
+		//分母为0时的处理
 		if(Rudder_Data.XYZ_Angle_B[i] == 0)
 		{
 			Rudder_Data.XYZ_Angle[i] = (45 + i*90)*ANGLE_TO_RAD;

@@ -170,13 +170,17 @@ void Gimbal_Init()
 		Pid_Reset(&PID_Gimbal_Speed[1]);
 		
 	//加了i的方案
-	
 //		Pid_Set(&PID_Gimbal_Angle[0],22,0,0,10000,3000,30000,10000,1,30000,0,2);	//Yaw
 //		Pid_Set(&PID_Gimbal_Speed[0],400,0,0,30000,5000,200,30000,1,30000,0,2);	  //Yaw	
-
 //		Pid_Set(&PID_Gimbal_Angle[1],3,0,0,10000,0,30000,10000,1,30000,0,2);		  //Pitch
 //		Pid_Set(&PID_Gimbal_Speed[1],90,2,0,30000,7000,30000,30000,1,30000,0,2);  //Pitch
 	
+	//麦轮参数
+//		Pid_Set(&PID_Gimbal_Angle[0],25,0,0,10000,3000,30000,10000,1,30000,0,2);	//Yaw
+//		Pid_Set(&PID_Gimbal_Speed[0],370,0,0,30000,5000,200,30000,1,30000,0,2);	  //Yaw	
+//		Pid_Set(&PID_Gimbal_Angle[1],2,0,0,10000,0,30000,10000,1,30000,0,2);		  //Pitch
+//		Pid_Set(&PID_Gimbal_Speed[1],80,0,0,30000,7000,30000,30000,1,30000,0,2);  //Pitch
+
 		Pid_Set(&PID_Gimbal_Angle[0],25,0,0,10000,3000,30000,10000,1,30000,0,2);	//Yaw
 		Pid_Set(&PID_Gimbal_Speed[0],370,0,0,30000,5000,200,30000,1,30000,0,2);	  //Yaw	
 

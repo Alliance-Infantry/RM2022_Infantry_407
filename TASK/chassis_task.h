@@ -3,6 +3,7 @@
 
 #define MAX_WHEEL_SPEED 8500
 
+#include "main.h"
 
 typedef struct
 {
@@ -11,12 +12,14 @@ typedef struct
 	float vw;
 	short wheel_speed[4];
 }Chassis_Speed_Typedef;
+
 typedef struct
 {
 	float vx;
 	float vy;
 	float vw;
 } Chassis_Control_Speed_Typedef;
+
 typedef enum
 {
 	CHASSIS_MODE_STOP = 0,
@@ -27,8 +30,11 @@ typedef enum
 	CHASSIS_MODE_RUNE
 }Chassis_Mode_Enum;
 
-#include "main.h"
+
 void chassis_task_create();
 
+extern Chassis_Mode_Enum Chassis_Mode;
+extern Chassis_Control_Speed_Typedef rc;
+extern Chassis_Control_Speed_Typedef keyboard;	
 
 #endif

@@ -97,8 +97,8 @@
 .\objects\pid.o: ..\HARDWARE\referee_info.h
 .\objects\pid.o: ..\HARDWARE\crc.h
 .\objects\pid.o: ..\HARDWARE\custom_ui.h
+.\objects\pid.o: ..\HARDWARE\can_handle.h
 .\objects\pid.o: ..\HARDWARE\gimbal.h
 .\objects\pid.o: ..\HARDWARE\chassis.h
-.\objects\pid.o: ..\HARDWARE\can_handle.h
 .\objects\pid.o: ..\TOOL\ramp.h
 .\objects\pid.o: ..\TOOL\kalman.h

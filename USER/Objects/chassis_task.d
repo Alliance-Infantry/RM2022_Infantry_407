@@ -97,8 +97,8 @@
 .\objects\chassis_task.o: ..\HARDWARE\referee_info.h
 .\objects\chassis_task.o: ..\HARDWARE\crc.h
 .\objects\chassis_task.o: ..\HARDWARE\custom_ui.h
+.\objects\chassis_task.o: ..\HARDWARE\can_handle.h
 .\objects\chassis_task.o: ..\HARDWARE\gimbal.h
 .\objects\chassis_task.o: ..\HARDWARE\chassis.h
-.\objects\chassis_task.o: ..\HARDWARE\can_handle.h
 .\objects\chassis_task.o: ..\TOOL\ramp.h
 .\objects\chassis_task.o: ..\TOOL\kalman.h

@@ -97,8 +97,8 @@
 .\objects\ui_task.o: ..\HARDWARE\referee_info.h
 .\objects\ui_task.o: ..\HARDWARE\crc.h
 .\objects\ui_task.o: ..\HARDWARE\custom_ui.h
+.\objects\ui_task.o: ..\HARDWARE\can_handle.h
 .\objects\ui_task.o: ..\HARDWARE\gimbal.h
 .\objects\ui_task.o: ..\HARDWARE\chassis.h
-.\objects\ui_task.o: ..\HARDWARE\can_handle.h
 .\objects\ui_task.o: ..\TOOL\ramp.h
 .\objects\ui_task.o: ..\TOOL\kalman.h

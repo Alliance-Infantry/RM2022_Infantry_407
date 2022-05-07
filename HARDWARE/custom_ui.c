@@ -301,10 +301,7 @@ void Draw_Float(ext_client_custom_graphic_float_t *Graphic,char Graphic_Name[3],
 
 
 char Send_Once_Flag = 0;//初始化标志
-extern int Pitch_Angle_NUC;
-extern Chassis_Mode_Enum Chassis_Mode;
-extern Gimbal_Mode_Enum Gimbal_Mode;
-extern Shoot_Mode_Enum Shoot_Mode;
+
 //显示UI界面图形
 void Show_UI()
 {

@@ -1,8 +1,7 @@
 #include "rudder.h"
-
-extern void Encoder_Data_Process(CAN_Data_TypeDef *encoder_data,short init_angle);
-
 Rudder_TypeDef Rudder_Data;
+char Is_Rudder = false;
+
 
 //∂Ê≥ı ºªØ
 void Rudder_Init()

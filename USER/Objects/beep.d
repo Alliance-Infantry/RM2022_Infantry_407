@@ -97,8 +97,8 @@
 .\objects\beep.o: ..\HARDWARE\referee_info.h
 .\objects\beep.o: ..\HARDWARE\crc.h
 .\objects\beep.o: ..\HARDWARE\custom_ui.h
+.\objects\beep.o: ..\HARDWARE\can_handle.h
 .\objects\beep.o: ..\HARDWARE\gimbal.h
 .\objects\beep.o: ..\HARDWARE\chassis.h
-.\objects\beep.o: ..\HARDWARE\can_handle.h
 .\objects\beep.o: ..\TOOL\ramp.h
 .\objects\beep.o: ..\TOOL\kalman.h

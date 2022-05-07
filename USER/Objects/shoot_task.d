@@ -97,8 +97,8 @@
 .\objects\shoot_task.o: ..\HARDWARE\referee_info.h
 .\objects\shoot_task.o: ..\HARDWARE\crc.h
 .\objects\shoot_task.o: ..\HARDWARE\custom_ui.h
+.\objects\shoot_task.o: ..\HARDWARE\can_handle.h
 .\objects\shoot_task.o: ..\HARDWARE\gimbal.h
 .\objects\shoot_task.o: ..\HARDWARE\chassis.h
-.\objects\shoot_task.o: ..\HARDWARE\can_handle.h
 .\objects\shoot_task.o: ..\TOOL\ramp.h
 .\objects\shoot_task.o: ..\TOOL\kalman.h

@@ -97,8 +97,8 @@
 .\objects\referee_info.o: ..\HARDWARE\referee_info.h
 .\objects\referee_info.o: ..\HARDWARE\crc.h
 .\objects\referee_info.o: ..\HARDWARE\custom_ui.h
+.\objects\referee_info.o: ..\HARDWARE\can_handle.h
 .\objects\referee_info.o: ..\HARDWARE\gimbal.h
 .\objects\referee_info.o: ..\HARDWARE\chassis.h
-.\objects\referee_info.o: ..\HARDWARE\can_handle.h
 .\objects\referee_info.o: ..\TOOL\ramp.h
 .\objects\referee_info.o: ..\TOOL\kalman.h

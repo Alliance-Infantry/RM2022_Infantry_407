@@ -16,5 +16,5 @@ void Chassis_Init()
 	}
 	//µ×ÅÌÔÆÌ¨Ëæ¶¯PID
 	Pid_Reset(&PID_Chassis_Omega);
-	Pid_Set(&PID_Chassis_Omega,80.0f,0,0.0f,16000,50,16000,7000,1,16000,0,2); 
+	Pid_Set(&PID_Chassis_Omega,100.0f,0,100.0f,16000,50,16000,7000,1,16000,0,2); 
 }

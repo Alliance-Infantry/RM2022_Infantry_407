@@ -97,8 +97,8 @@
 .\objects\rudder.o: ..\HARDWARE\referee_info.h
 .\objects\rudder.o: ..\HARDWARE\crc.h
 .\objects\rudder.o: ..\HARDWARE\custom_ui.h
+.\objects\rudder.o: ..\HARDWARE\can_handle.h
 .\objects\rudder.o: ..\HARDWARE\gimbal.h
 .\objects\rudder.o: ..\HARDWARE\chassis.h
-.\objects\rudder.o: ..\HARDWARE\can_handle.h
 .\objects\rudder.o: ..\TOOL\ramp.h
 .\objects\rudder.o: ..\TOOL\kalman.h

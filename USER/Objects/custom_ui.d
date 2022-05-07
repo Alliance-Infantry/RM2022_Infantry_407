@@ -97,8 +97,8 @@
 .\objects\custom_ui.o: ..\HARDWARE\referee_info.h
 .\objects\custom_ui.o: ..\HARDWARE\crc.h
 .\objects\custom_ui.o: ..\HARDWARE\custom_ui.h
+.\objects\custom_ui.o: ..\HARDWARE\can_handle.h
 .\objects\custom_ui.o: ..\HARDWARE\gimbal.h
 .\objects\custom_ui.o: ..\HARDWARE\chassis.h
-.\objects\custom_ui.o: ..\HARDWARE\can_handle.h
 .\objects\custom_ui.o: ..\TOOL\ramp.h
 .\objects\custom_ui.o: ..\TOOL\kalman.h

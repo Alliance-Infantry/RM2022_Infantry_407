@@ -97,8 +97,8 @@
 .\objects\tim6.o: ..\HARDWARE\referee_info.h
 .\objects\tim6.o: ..\HARDWARE\crc.h
 .\objects\tim6.o: ..\HARDWARE\custom_ui.h
+.\objects\tim6.o: ..\HARDWARE\can_handle.h
 .\objects\tim6.o: ..\HARDWARE\gimbal.h
 .\objects\tim6.o: ..\HARDWARE\chassis.h
-.\objects\tim6.o: ..\HARDWARE\can_handle.h
 .\objects\tim6.o: ..\TOOL\ramp.h
 .\objects\tim6.o: ..\TOOL\kalman.h

@@ -15,7 +15,6 @@ Log:
 #include "sys.h" //包含位带操作
 #include "stdio.h"	//标准输入输出库
 #include <math.h>   //数学处理函数
-
 #include "arm_math.h" //DSP数学处理库
 
 
@@ -80,12 +79,11 @@ typedef double fp64;
 #include "custom_ui.h"
 
 //云台底盘控制
+#include "can_handle.h"
 #include "gimbal.h"
 #include "chassis.h"
-#include "can_handle.h"
 
 //辅助功能
 #include "ramp.h"
 #include "kalman.h"
-
 #endif

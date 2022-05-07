@@ -97,8 +97,8 @@
 .\objects\flash.o: ..\HARDWARE\referee_info.h
 .\objects\flash.o: ..\HARDWARE\crc.h
 .\objects\flash.o: ..\HARDWARE\custom_ui.h
+.\objects\flash.o: ..\HARDWARE\can_handle.h
 .\objects\flash.o: ..\HARDWARE\gimbal.h
 .\objects\flash.o: ..\HARDWARE\chassis.h
-.\objects\flash.o: ..\HARDWARE\can_handle.h
 .\objects\flash.o: ..\TOOL\ramp.h
 .\objects\flash.o: ..\TOOL\kalman.h

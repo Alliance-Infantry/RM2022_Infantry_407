@@ -97,8 +97,8 @@
 .\objects\nuc.o: ..\HARDWARE\referee_info.h
 .\objects\nuc.o: ..\HARDWARE\crc.h
 .\objects\nuc.o: ..\HARDWARE\custom_ui.h
+.\objects\nuc.o: ..\HARDWARE\can_handle.h
 .\objects\nuc.o: ..\HARDWARE\gimbal.h
 .\objects\nuc.o: ..\HARDWARE\chassis.h
-.\objects\nuc.o: ..\HARDWARE\can_handle.h
 .\objects\nuc.o: ..\TOOL\ramp.h
 .\objects\nuc.o: ..\TOOL\kalman.h

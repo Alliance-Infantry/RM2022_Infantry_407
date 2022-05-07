@@ -97,8 +97,8 @@
 .\objects\shoot.o: ..\HARDWARE\referee_info.h
 .\objects\shoot.o: ..\HARDWARE\crc.h
 .\objects\shoot.o: ..\HARDWARE\custom_ui.h
+.\objects\shoot.o: ..\HARDWARE\can_handle.h
 .\objects\shoot.o: ..\HARDWARE\gimbal.h
 .\objects\shoot.o: ..\HARDWARE\chassis.h
-.\objects\shoot.o: ..\HARDWARE\can_handle.h
 .\objects\shoot.o: ..\TOOL\ramp.h
 .\objects\shoot.o: ..\TOOL\kalman.h

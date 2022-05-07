@@ -196,8 +196,7 @@ int Yaw_Angle_NUC = 0;
 int Roll_Angle_NUC = 0;
 
 extern float yaw_angle;
-//原始Pitch角
-extern short Origin_Init_Pitch_Angle;
+
 /**
  *@Function:		NUC_Send_Data()
  *@Description:	NUC数据发送
@@ -218,7 +217,7 @@ void NUC_Send_Data()
 	{NUC_tx_buff[8] = NUC_tx_buff[8] | 0x80;}       //己方蓝色	
 	
 	//陀螺模式
-	if(DBUS.PC.Keyboard & KEY_F && !DBUS.PC.Keyboard & KEY_CTRL)
+	if(DBUS.PC.Keyboard & KEY_F && !(DBUS.PC.Keyboard & KEY_CTRL))
 	{
 		NUC_tx_buff[8] = NUC_tx_buff[8] & 0xf0;
 		NUC_tx_buff[8] = NUC_tx_buff[8] | 0x03;

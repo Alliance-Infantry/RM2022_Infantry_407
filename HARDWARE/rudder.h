@@ -30,6 +30,7 @@ typedef struct
 } Rudder_TypeDef;
 
 extern Rudder_TypeDef Rudder_Data;
+extern char Is_Rudder ;
 
 
 #include "main.h"

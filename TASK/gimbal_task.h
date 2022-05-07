@@ -11,6 +11,9 @@ typedef enum
 
 #include "main.h"
 void gimbal_task_create();
+extern Gimbal_Mode_Enum Gimbal_Mode;
 
-
+extern float Pitch_Aim_Angle;
+extern float Pitch_Angle_Max;
+extern float Pitch_Angle_Min;
 #endif

@@ -97,8 +97,8 @@
 .\objects\delay.o: ..\HARDWARE\referee_info.h
 .\objects\delay.o: ..\HARDWARE\crc.h
 .\objects\delay.o: ..\HARDWARE\custom_ui.h
+.\objects\delay.o: ..\HARDWARE\can_handle.h
 .\objects\delay.o: ..\HARDWARE\gimbal.h
 .\objects\delay.o: ..\HARDWARE\chassis.h
-.\objects\delay.o: ..\HARDWARE\can_handle.h
 .\objects\delay.o: ..\TOOL\ramp.h
 .\objects\delay.o: ..\TOOL\kalman.h

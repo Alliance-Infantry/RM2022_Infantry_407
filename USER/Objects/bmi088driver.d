@@ -96,9 +96,9 @@
 .\objects\bmi088driver.o: ..\HARDWARE\referee_info.h
 .\objects\bmi088driver.o: ..\HARDWARE\crc.h
 .\objects\bmi088driver.o: ..\HARDWARE\custom_ui.h
+.\objects\bmi088driver.o: ..\HARDWARE\can_handle.h
 .\objects\bmi088driver.o: ..\HARDWARE\gimbal.h
 .\objects\bmi088driver.o: ..\HARDWARE\chassis.h
-.\objects\bmi088driver.o: ..\HARDWARE\can_handle.h
 .\objects\bmi088driver.o: ..\TOOL\ramp.h
 .\objects\bmi088driver.o: ..\TOOL\kalman.h
 .\objects\bmi088driver.o: ..\HARDWARE\BMI088reg.h

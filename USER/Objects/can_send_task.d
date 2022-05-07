@@ -97,8 +97,8 @@
 .\objects\can_send_task.o: ..\HARDWARE\referee_info.h
 .\objects\can_send_task.o: ..\HARDWARE\crc.h
 .\objects\can_send_task.o: ..\HARDWARE\custom_ui.h
+.\objects\can_send_task.o: ..\HARDWARE\can_handle.h
 .\objects\can_send_task.o: ..\HARDWARE\gimbal.h
 .\objects\can_send_task.o: ..\HARDWARE\chassis.h
-.\objects\can_send_task.o: ..\HARDWARE\can_handle.h
 .\objects\can_send_task.o: ..\TOOL\ramp.h
 .\objects\can_send_task.o: ..\TOOL\kalman.h

@@ -97,8 +97,8 @@
 .\objects\mode_task.o: ..\HARDWARE\referee_info.h
 .\objects\mode_task.o: ..\HARDWARE\crc.h
 .\objects\mode_task.o: ..\HARDWARE\custom_ui.h
+.\objects\mode_task.o: ..\HARDWARE\can_handle.h
 .\objects\mode_task.o: ..\HARDWARE\gimbal.h
 .\objects\mode_task.o: ..\HARDWARE\chassis.h
-.\objects\mode_task.o: ..\HARDWARE\can_handle.h
 .\objects\mode_task.o: ..\TOOL\ramp.h
 .\objects\mode_task.o: ..\TOOL\kalman.h

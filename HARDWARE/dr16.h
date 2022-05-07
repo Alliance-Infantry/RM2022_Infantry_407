@@ -67,8 +67,9 @@ typedef struct
 		int16_t angle;
 	}Control;
 }DBUS_DecodingData_TypeDef;
-
-extern DBUS_DecodingData_TypeDef DBUS;
 void DR16_Init();
 
+extern DBUS_DecodingData_TypeDef DBUS;
+//Ò£¿ØÆ÷Ë¥¼õÐÅºÅ
+extern int DR16_Signal;
 #endif

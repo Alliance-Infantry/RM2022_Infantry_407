@@ -4,11 +4,9 @@ void Chassis_Follow_Control();
 void Chassis_Stop_Control();
 void Chassis_Rotate_Control();
 
-
 void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw);
 
-
-void Encoder_Data_Process(CAN_Data_TypeDef *encoder_data,short init_angle);
+void Angle_Reverse_Handle();
 
 #define ANGLE_TO_RAD 0.01745329251994329576923690768489f
 
@@ -38,11 +36,13 @@ void chassis_task_create()
 
 
 void Chassis_Power_Limit();
-void Chassis_SuperCap_Control();
-extern int SuperCap_Signal;
-extern int power_relay;
-int Super_Allow_Flag = 0;
+void Chassis_SuperCap_Wulie_Control(void);
+void Chassis_SuperCap_HomeMade_Control(void);
+void Chassis_SuperCap_Control(void);
 
+
+
+int Super_Allow_Flag = 0;
 int time_delay = 0;
 
 /**
@@ -81,75 +81,32 @@ void chassis_task(void *p_arg)
 				break;
 		}
 		
-		//底盘速度解算
-//		Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);
-		//舵轮速度解算
-		Chassis_Rudder_Nearby_Cal(rc.vx + keyboard.vx,rc.vy + keyboard.vy,0); //就近原则
 		
-		//安装了电容
-		if(SuperCap_Signal > 0)
+		if(Rudder_Signal <= 0 && CAN2_Signal >= 0 && Is_Rudder == false)
 		{
-			//雾列控制电容
-			if(SuperCap_Info.id == 0x211)
-			{
-				Chassis_SuperCap_Control();			
-			}
-			//自制超级电容
-			else if(SuperCap_Info.id == 0x300)
-			{
-
-				//电容低于15v后不允许开启电容模式
-				if(SuperCap_Info.CapVot < 15.0)
-				{
-						Super_Allow_Flag = 0;				
-				}
-				//关闭电容模式下限制底盘功率
-				if(IS_SUPER_OFF)
-				{
-					Super_Allow_Flag = 1;
-					
-					time_delay = 0;
-					power_relay = 0;
-					Chassis_Power_Limit();
-				}
-				//手动开启超级电容模式，且电压允许下
-				else if(Super_Allow_Flag)
-				{
-					time_delay ++;
-					if(time_delay < 50)
-					{
-						Chassis_Power_Limit();										
-					}
-					
-					power_relay = 1;
-				}
-				//手动开启超级电容模式，在电压不允许的情况下，此时强制
-				//切回底盘限速模式，并且需要手动关闭超级电容模式后才能再次开启
-				else
-				{
-					time_delay = 0;
-					power_relay = 0;
-					Chassis_Power_Limit();				
-				}
-			}
+			//底盘速度解算
+			Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);		
+			Angle_Reverse_Handle();			
 		}
-		//未接入电容，使用裁判系统数据
 		else
 		{
-			//开启超速模式，未使用电容情况下慎用
-			//关闭电容模式下
-			if(IS_SUPER_OFF)
-			{
-				Chassis_Power_Limit();
-			}			
+			Is_Rudder = true;
+			//舵轮速度解算
+			Chassis_Rudder_Nearby_Cal(rc.vx + keyboard.vx,rc.vy + keyboard.vy,0); //就近原则			
+
 		}
 
+		
+
+		//底盘电容控制
+		Chassis_SuperCap_Control();
 		
 		//电机目标电流赋值
 		for(int i = 0;i<4;i++)
 		{
 			CAN_Chassis[i].Target_Current = Pid_Calc(&PID_Chassis[i], CAN_Chassis[i].Current_Speed, Chassis_Speed.wheel_speed[i]);		
 		}
+		
 		if(Chassis_Mode == CHASSIS_MODE_STOP)
 		{
 			for(int i = 0;i<4;i++)
@@ -164,7 +121,39 @@ void chassis_task(void *p_arg)
 	}
 
 }
-
+/**
+ *@Function:	底盘电容策略控制	
+ *@Description:	
+ *@Param:       形参
+ *@Return:	  	返回值
+ */
+void Chassis_SuperCap_Control(void)
+{
+			//安装了电容
+		if(SuperCap_Signal > 0)
+		{
+			//雾列控制电容
+			if(SuperCap_Info.id == 0x211)
+			{
+				Chassis_SuperCap_Wulie_Control();			
+			}
+			//自制超级电容
+			else if(SuperCap_Info.id == 0x300)
+			{
+				Chassis_SuperCap_HomeMade_Control();
+			}
+		}
+		//未接入电容，使用裁判系统数据
+		else
+		{
+			//开启超速模式，未使用电容情况下慎用
+			//关闭电容模式下
+			if(IS_SUPER_OFF)
+			{
+				Chassis_Power_Limit();
+			}			
+		}
+}
 /**
  *@Function:	底盘功率限制	
  *@Description:	
@@ -186,12 +175,12 @@ void Chassis_Power_Limit()
 
 
 /**
- *@Function:	底盘电容控制策略
+ *@Function:	底盘雾列电容控制策略
  *@Description:	
  *@Param:       形参
  *@Return:	  	返回值
  */
-void Chassis_SuperCap_Control()
+void Chassis_SuperCap_Wulie_Control()
 {
 	static float   power_limit = 1.0; //功率限制系数
 	static uint8_t power_flag  = 0; 	//超速标志
@@ -251,11 +240,49 @@ void Chassis_SuperCap_Control()
 	}
 		
 }
+/**
+ *@Function:	底盘自制电容控制策略
+ *@Description:	
+ *@Param:       形参
+ *@Return:	  	返回值
+ */
+void Chassis_SuperCap_HomeMade_Control()
+{
+//电容低于15v后不允许开启电容模式
+		if(SuperCap_Info.CapVot < 15.0)
+		{
+				Super_Allow_Flag = 0;				
+		}
+		//关闭电容模式下限制底盘功率
+		if(IS_SUPER_OFF)
+		{
+			Super_Allow_Flag = 1;
+			
+			time_delay = 0;
+			power_relay = 0;
+			Chassis_Power_Limit();
+		}
+		//手动开启超级电容模式，且电压允许下
+		else if(Super_Allow_Flag)
+		{
+			time_delay ++;
+			if(time_delay < 50)
+			{
+				Chassis_Power_Limit();										
+			}
+			
+			power_relay = 1;
+		}
+		//手动开启超级电容模式，在电压不允许的情况下，此时强制
+		//切回底盘限速模式，并且需要手动关闭超级电容模式后才能再次开启
+		else
+		{
+			time_delay = 0;
+			power_relay = 0;
+			Chassis_Power_Limit();				
+		}
+}
 
-//上一中值角度
-extern short Angle_Last;
-//初始角度
-extern short Init_Angle;
 
 //返回Critical值
 int Encoder_Data_Cal(CAN_Data_TypeDef *encoder_data,short init_angle)
@@ -300,7 +327,6 @@ void Angle_Reverse_Handle()
 	//角度跳变
 	if(abs(CAN_Gimbal[0].Current_MechAngle - Angle_Last) > 4000)
 	{
-		
 		if(CAN_Gimbal[0].Critical_MechAngle == Encoder_Data_Cal(&CAN_Gimbal[0],Origin_Init_Yaw_Angle) )
 		{
 			//将反面改为正前方
@@ -339,7 +365,6 @@ void Angle_Reverse_Handle()
 	Angle_Last = CAN_Gimbal[0].Current_MechAngle;
 }
 int Chassis_Rotate_Base_Speed = 0;
-
 /**
  *@Function:		Chassis_Follow_Control()
  *@Description:	底盘跟随控制
@@ -353,18 +378,15 @@ void Chassis_Follow_Control()
 	Chassis_Speed.vx = rc.vx + keyboard.vx;
 	Chassis_Speed.vy = rc.vy + keyboard.vy;
 	Chassis_Speed.vw = Pid_Calc(&PID_Chassis_Omega,(CAN_Gimbal[0].Current_MechAngle - Init_Angle)/8192.0*360.0f, 0); //云台Yaw轴相对角PID 输出旋转速度分量
-	
-//	Angle_Reverse_Handle();
-	
-//	Chassis_Speed.vx *= Init_Dir;
-//	Chassis_Speed.vy *= Init_Dir;
+		
+	Chassis_Speed.vx *= Init_Dir;
+	Chassis_Speed.vy *= Init_Dir;
 
 	//旋转速度死区，减少静止底盘轮系抖动
 	if(fabs(Chassis_Speed.vw) < 200)
 	Chassis_Speed.vw = 0;
 }
 
-extern short Origin_Init_Yaw_Angle;
 /**
  *@Function:		Chassis_Rotate_Control()
  *@Description:	底盘陀螺控制
@@ -373,21 +395,16 @@ extern short Origin_Init_Yaw_Angle;
  */
 void Chassis_Rotate_Control()
 {
-//	Chassis_Rotate_Base_Speed = 1000;
+	Chassis_Rotate_Base_Speed = 5000;
 	
 	static double Rotate_Angle = 0;
 	
 	Rotate_Angle = (CAN_Gimbal[0].Current_MechAngle - Origin_Init_Yaw_Angle)/8192.0*360.0f;
-	if(Rotate_Angle <= 0)
-	{
-		Rotate_Angle = Rotate_Angle + 360.0f;
-	}
+	if(Rotate_Angle <= 0)	{Rotate_Angle = Rotate_Angle + 360.0f;}
 	
 	Chassis_Speed.vx = +(rc.vy + keyboard.vy) * sin(Rotate_Angle * ANGLE_TO_RAD) + (rc.vx + keyboard.vx) * cos(Rotate_Angle * ANGLE_TO_RAD);
 	Chassis_Speed.vy = +(rc.vy + keyboard.vy) * cos(Rotate_Angle * ANGLE_TO_RAD) - (rc.vx + keyboard.vx) * sin(Rotate_Angle * ANGLE_TO_RAD);
 	Chassis_Speed.vw = Chassis_Rotate_Base_Speed;
-	
-//	Angle_Reverse_Handle();
 }
 /**
  *@Function:		Chassis_Stop_Control()
@@ -428,20 +445,23 @@ void Chassis_Max_Limit()
 	}
 }
 
+int Chassis_Rudder_Rotate_Speed = 0;
+float Chassis_Power_Up = 100.0f;
+
 //底盘舵轮就近原则解算
 void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 {
 	if(Chassis_Mode == CHASSIS_MODE_FOLLOW)
 	{
-		Chassis_Rotate_Base_Speed = Pid_Calc(&PID_Chassis_Omega,(CAN_Gimbal[0].Current_MechAngle - Init_Angle)/8192.0*360.0f, 0);
+		Chassis_Rudder_Rotate_Speed = Pid_Calc(&PID_Chassis_Omega,(CAN_Gimbal[0].Current_MechAngle - Init_Angle)/8192.0*360.0f, 0);
 	}
 	else if(Chassis_Mode == CHASSIS_MODE_AUTOAIM)
 	{
-		Chassis_Rotate_Base_Speed = 0;
+		Chassis_Rudder_Rotate_Speed = 0;
 	}
 	else
 	{
-		Chassis_Rotate_Base_Speed = game_robot_state.chassis_power_limit / 120.0 * 5000;
+		Chassis_Rudder_Rotate_Speed = game_robot_state.chassis_power_limit / Chassis_Power_Up * 6000;
 	}
 	
 	//XY平面初始速度夹角 y除以x
@@ -492,8 +512,8 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 		Rudder_Data.Z_Angle_Cos = arm_cos_f32((45 + i*90)*ANGLE_TO_RAD);
 		
 		//舵向角反正切分子分母
-		Rudder_Data.XYZ_Angle_A[i] = Chassis_Rotate_Base_Speed * (Rudder_Data.Z_Angle_Sin) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Sin;
-		Rudder_Data.XYZ_Angle_B[i] = Chassis_Rotate_Base_Speed * (Rudder_Data.Z_Angle_Cos) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Cos;
+		Rudder_Data.XYZ_Angle_A[i] = Chassis_Rudder_Rotate_Speed * (Rudder_Data.Z_Angle_Sin) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Sin;
+		Rudder_Data.XYZ_Angle_B[i] = Chassis_Rudder_Rotate_Speed * (Rudder_Data.Z_Angle_Cos) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Cos;
 		
 		//分母为0时的处理
 		if(Rudder_Data.XYZ_Angle_B[i] == 0)

@@ -97,8 +97,8 @@
 .\objects\led.o: ..\HARDWARE\referee_info.h
 .\objects\led.o: ..\HARDWARE\crc.h
 .\objects\led.o: ..\HARDWARE\custom_ui.h
+.\objects\led.o: ..\HARDWARE\can_handle.h
 .\objects\led.o: ..\HARDWARE\gimbal.h
 .\objects\led.o: ..\HARDWARE\chassis.h
-.\objects\led.o: ..\HARDWARE\can_handle.h
 .\objects\led.o: ..\TOOL\ramp.h
 .\objects\led.o: ..\TOOL\kalman.h

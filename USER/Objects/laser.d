@@ -97,8 +97,8 @@
 .\objects\laser.o: ..\HARDWARE\referee_info.h
 .\objects\laser.o: ..\HARDWARE\crc.h
 .\objects\laser.o: ..\HARDWARE\custom_ui.h
+.\objects\laser.o: ..\HARDWARE\can_handle.h
 .\objects\laser.o: ..\HARDWARE\gimbal.h
 .\objects\laser.o: ..\HARDWARE\chassis.h
-.\objects\laser.o: ..\HARDWARE\can_handle.h
 .\objects\laser.o: ..\TOOL\ramp.h
 .\objects\laser.o: ..\TOOL\kalman.h

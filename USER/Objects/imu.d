@@ -98,8 +98,8 @@
 .\objects\imu.o: ..\HARDWARE\referee_info.h
 .\objects\imu.o: ..\HARDWARE\crc.h
 .\objects\imu.o: ..\HARDWARE\custom_ui.h
+.\objects\imu.o: ..\HARDWARE\can_handle.h
 .\objects\imu.o: ..\HARDWARE\gimbal.h
 .\objects\imu.o: ..\HARDWARE\chassis.h
-.\objects\imu.o: ..\HARDWARE\can_handle.h
 .\objects\imu.o: ..\TOOL\ramp.h
 .\objects\imu.o: ..\TOOL\kalman.h

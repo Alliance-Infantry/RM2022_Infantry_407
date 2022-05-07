@@ -19,7 +19,9 @@ typedef enum
 
 
 #include "main.h"
-
 void shoot_task_create();
+
+extern Shoot_Cmd_Enum Shoot_Cmd; //发射模式，单发1 连发2
+extern Shoot_Mode_Enum Shoot_Mode;
 
 #endif

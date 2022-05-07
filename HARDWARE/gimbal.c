@@ -149,9 +149,7 @@ short Init_Angle ;
 short Origin_Init_Yaw_Angle;
 short Origin_Init_Pitch_Angle;
 
-extern float Pitch_Aim_Angle;
-extern float Pitch_Angle_Max;
-extern float Pitch_Angle_Min;
+
 /**
  *@Function:		Gimbal_Init()
  *@Description:	‘∆Ã®≥ı ºªØ

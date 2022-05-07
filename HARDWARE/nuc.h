@@ -18,4 +18,8 @@ typedef  struct
 void NUC_Send_Data();
 extern NUC_Info_TypeDef NUC_Data;
 
+extern int Roll_Angle_NUC;
+extern int Pitch_Angle_NUC;
+extern int Yaw_Angle_NUC;
+
 #endif

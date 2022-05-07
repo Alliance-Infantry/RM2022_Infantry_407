@@ -97,8 +97,8 @@
 .\objects\led_task.o: ..\HARDWARE\referee_info.h
 .\objects\led_task.o: ..\HARDWARE\crc.h
 .\objects\led_task.o: ..\HARDWARE\custom_ui.h
+.\objects\led_task.o: ..\HARDWARE\can_handle.h
 .\objects\led_task.o: ..\HARDWARE\gimbal.h
 .\objects\led_task.o: ..\HARDWARE\chassis.h
-.\objects\led_task.o: ..\HARDWARE\can_handle.h
 .\objects\led_task.o: ..\TOOL\ramp.h
 .\objects\led_task.o: ..\TOOL\kalman.h

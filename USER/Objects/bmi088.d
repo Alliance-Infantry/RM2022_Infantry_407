@@ -97,8 +97,8 @@
 .\objects\bmi088.o: ..\HARDWARE\referee_info.h
 .\objects\bmi088.o: ..\HARDWARE\crc.h
 .\objects\bmi088.o: ..\HARDWARE\custom_ui.h
+.\objects\bmi088.o: ..\HARDWARE\can_handle.h
 .\objects\bmi088.o: ..\HARDWARE\gimbal.h
 .\objects\bmi088.o: ..\HARDWARE\chassis.h
-.\objects\bmi088.o: ..\HARDWARE\can_handle.h
 .\objects\bmi088.o: ..\TOOL\ramp.h
 .\objects\bmi088.o: ..\TOOL\kalman.h

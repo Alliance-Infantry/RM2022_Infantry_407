@@ -16,16 +16,17 @@ Log:
 //CAN1
 //底盘
 CAN_Data_TypeDef CAN_Chassis[4]; //0x201 - 0x204
-
-//CAN2
-//舵
-CAN_Data_TypeDef CAN_Rudder[4]; //0x205-0x208
-
 //云台
 CAN_Data_TypeDef CAN_Gimbal[2];	 //Yaw-0x205 Pitch-0x209
+
+//CAN2
 //发射
-CAN_Data_TypeDef CAN_Shoot[2];	 //Left_Fric-0x203 Right_Fric-0x204
 CAN_Data_TypeDef CAN_Trigger;    //Trigger-0x202 
+CAN_Data_TypeDef CAN_Shoot[2];	 //Left_Fric-0x203 Right_Fric-0x204
+//舵
+CAN_Data_TypeDef CAN_Rudder[4];  //0x205-0x208
+
+
 
 //超级电容
 SuperCap_TypeDef SuperCap_Info;  //SuperCap-0x210
@@ -33,6 +34,7 @@ SuperCap_TypeDef SuperCap_Info;  //SuperCap-0x210
 int CAN1_Signal = 0;																		//CAN1信号量标志
 int CAN2_Signal = 0;																		//CAN2信号量标志
 int SuperCap_Signal = 0;																//超级电容信号量标志
+int Rudder_Signal = 0;																	//舵轮信号量标志
 
 unsigned char CAN1_Tx_Message_Flag = 0;									//CAN1发送消息标志
 unsigned char CAN2_Tx_Message_Flag = 0;									//CAN2发送消息标志
@@ -191,7 +193,7 @@ void CAN1_RX0_IRQHandler(void)
 					SuperCap_Info.CapVot = 			 (float) pPowerData[1] / 100.0f; //电容电压
 					SuperCap_Info.InputCurrent = (float) pPowerData[2] / 100.0f; //输入电流
 					SuperCap_Info.CurrentPower = (float) pPowerData[3] / 100.0f; //设定功率
-					SuperCap_Info.Low_Filter_Vot = 0.3*SuperCap_Info.CapVot + (1-0.3)*SuperCap_Info.Low_Filter_Vot; //超级电容电压低通滤波值,滤波系数0.3
+					SuperCap_Info.Low_Filter_Vot = 0.3f*SuperCap_Info.CapVot + (1.0f-0.3f)*SuperCap_Info.Low_Filter_Vot; //超级电容电压低通滤波值,滤波系数0.3
 					SuperCap_Info.id             = 0x211;
 					//超级电容信号量补充
 					SuperCap_Signal = 1000;
@@ -267,6 +269,7 @@ void CAN2_RX0_IRQHandler(void)
 				case 0x207:
 				case 0x208:
 				{
+					Rudder_Signal = 100;
 					CAN_Data_Decode(&CAN_Rudder[CAN2_Rx_Message.StdId - 0x205],&CAN2_Rx_Message);
 				}break;				
 				
@@ -471,15 +474,6 @@ void CAN2_TX_Rudder(void)
 	CAN2_Tx_Message.Data[6] = (CAN_Rudder[3].Target_Current>>8)&0xff;             
 	CAN2_Tx_Message.Data[7] = (CAN_Rudder[3].Target_Current)&0xff;     
 
-	//
-//	CAN2_Tx_Message.Data[0] = 0;  
-//	CAN2_Tx_Message.Data[1] = 0; 
-//	CAN2_Tx_Message.Data[2] = 0;  
-//	CAN2_Tx_Message.Data[3] = 0;                
-//	CAN2_Tx_Message.Data[4] = 0;  
-//	CAN2_Tx_Message.Data[5] = 0;                   
-//	CAN2_Tx_Message.Data[6] = 0;             
-//	CAN2_Tx_Message.Data[7] = 0;  
 	
 	CAN2_Tx_Message_Flag = 0;
 	

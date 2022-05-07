@@ -9,15 +9,9 @@ void Get_Shoot_Mode();
 void Get_Cover_Mode();
 void Get_Keyboard_Mode();
 
-//遥控器衰减信号
-extern int DR16_Signal;
 
-extern Chassis_Mode_Enum Chassis_Mode;
-extern Gimbal_Mode_Enum Gimbal_Mode;
-extern Shoot_Mode_Enum Shoot_Mode;
 
-extern Chassis_Control_Speed_Typedef rc;
-extern Chassis_Control_Speed_Typedef keyboard;	
+
 
 
 TaskHandle_t MODE_Task_Handler;
@@ -39,13 +33,6 @@ void mode_task_create()
 							(TaskHandle_t*  )&MODE_Task_Handler);  //任务句柄  
 }
 
-
-
-
-extern int CAN1_Signal ;
-extern int CAN2_Signal ;
-extern int SuperCap_Signal ;
-
 /**
  *@Function:		mode_task(void *p_arg)
  *@Description:	模式切换任务
@@ -64,7 +51,13 @@ void mode_task(void *p_arg)
 		CAN1_Signal     --;
 		CAN2_Signal     --;
 		SuperCap_Signal --;
+		
+		
+		Rudder_Signal   --;
+		if(Rudder_Signal <= 0){Rudder_Signal = 0;}
+		
 		DR16_Signal     --; //信号量递减，在此之前读值应该不为0,否则视为遥控器断电
+		
 		//遥控器断连，机器人关闭控制
 		if(DR16_Signal <= 0)
 		{
@@ -107,8 +100,8 @@ void mode_task(void *p_arg)
 void Get_Chassis_RC()
 {
 	//手动限制最大速度
-	rc.vx = DBUS.RC.ch1 / 660.0f * 5000.0f;
-	rc.vy = DBUS.RC.ch0 / 660.0f * 5000.0f;
+	rc.vx = DBUS.RC.ch1 / 660.0f * 7000.0f;
+	rc.vy = DBUS.RC.ch0 / 660.0f * 7000.0f;
 	rc.vw = DBUS.RC.ch2 / 660.0f * 1500.0f;
 	
 }
@@ -133,12 +126,12 @@ void Get_Chassis_Keyboard()
 	//前进后退
 	if(DBUS.PC.Keyboard & KEY_W)
 	{
-		keyboard.vx = current_speed_x + (6000 - current_speed_x) * ramp_calc(&fb_ramp);		
+		keyboard.vx = current_speed_x + (7000 - current_speed_x) * ramp_calc(&fb_ramp);		
 		ramp_init(&slow_ramp,2000);			//2000	
 	}
 	else if(DBUS.PC.Keyboard & KEY_S)
 	{
-		keyboard.vx = current_speed_x + (-6000 - current_speed_x) * ramp_calc(&fb_ramp);	
+		keyboard.vx = current_speed_x + (-7000 - current_speed_x) * ramp_calc(&fb_ramp);	
 		ramp_init(&slow_ramp,2000);
 	}
 	else
@@ -150,12 +143,12 @@ void Get_Chassis_Keyboard()
 	//左右平移
 	if(DBUS.PC.Keyboard & KEY_A)
 	{
-		keyboard.vy = current_speed_y + (-6000 -current_speed_y) * ramp_calc(&lr_ramp);			
+		keyboard.vy = current_speed_y + (-7000 -current_speed_y) * ramp_calc(&lr_ramp);			
 		ramp_init(&slow_ramp,2000);
 	}
 	else if(DBUS.PC.Keyboard & KEY_D)
 	{
-		keyboard.vy = current_speed_y +(6000 -current_speed_y) * ramp_calc(&lr_ramp);
+		keyboard.vy = current_speed_y +(7000 -current_speed_y) * ramp_calc(&lr_ramp);
 		ramp_init(&slow_ramp,2000);
 	}
 	else
@@ -166,7 +159,6 @@ void Get_Chassis_Keyboard()
 		current_speed_x = keyboard.vx;
 		current_speed_y = keyboard.vy;
 }
-extern	char Send_Once_Flag;//初始化标志
 int Cover_Open_Flag = 0; //键盘翻盖控制状态标志位
 int Shoot_Run_Flag = 0; //键盘摩擦轮开关状态标志位
 int Chassis_Rotate_Flag = 0; //键盘小陀螺开关状态标志位
@@ -366,7 +358,6 @@ void Get_Cover_Mode()
 
 int Trig_Time = 0;	//发射触发时间
 int Switch_Left_Last = RC_SW_UP; //左拨杆上一状态
-extern Shoot_Cmd_Enum Shoot_Cmd; //发射模式，单发1 连发2
 int Shoot_Once_Flag = 0;
 int Shoot_Aim_Angle = 0;
 int Shoot_Angle_Bullet = 36856;

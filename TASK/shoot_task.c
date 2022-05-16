@@ -86,7 +86,7 @@ int Shoot_Speed = 0;
 
 //7000——30m/s
 //4500——15m/s
-int shoot_bullet_speed = 4500;
+int shoot_bullet_speed = 0;
 
 
 
@@ -104,30 +104,27 @@ int speed_control_count = 0;
 void Shoot_Run_Control()
 {
 	//射速判断
-	if(game_robot_state.shooter_id1_17mm_speed_limit == 15)
-	{
-		if(shoot_speed_get != real_shoot_data.bullet_speed)
-		{
-			if(real_shoot_data.bullet_speed > 14.3)
-			{
-				speed_control_count -= ((real_shoot_data.bullet_speed - 14.3)/0.1);
-			}
-			else if(real_shoot_data.bullet_speed < 14.0)
-			{
-				speed_control_count += ((14.0 - real_shoot_data.bullet_speed)/0.1);				
-			}
-		}
-		shoot_bullet_speed = 4350 + speed_control_count * 25;
-		if(shoot_bullet_speed > 4400)shoot_bullet_speed = 4400;
-		if(shoot_bullet_speed < 4300)shoot_bullet_speed = 4300;
-	}
-	else if(game_robot_state.shooter_id1_17mm_speed_limit == 30)
+	if(game_robot_state.shooter_id1_17mm_speed_limit == 30)
 	{
 		shoot_bullet_speed = 7000;		
 	}
 	else
 	{
-		shoot_bullet_speed = 4500;		
+//		if(shoot_speed_get != real_shoot_data.bullet_speed)
+//		{
+//			if(real_shoot_data.bullet_speed > 14.5)
+//			{
+//				speed_control_count -= ((real_shoot_data.bullet_speed - 14.3)/0.1);
+//			}
+//			else if(real_shoot_data.bullet_speed < 13.5)
+//			{
+//				speed_control_count += ((14.0 - real_shoot_data.bullet_speed)/0.1);				
+//			}
+//		}
+//		shoot_bullet_speed = 4500 + speed_control_count * 10;
+//		if(shoot_bullet_speed > 4500)shoot_bullet_speed = 4500;
+//		if(shoot_bullet_speed < 4200)shoot_bullet_speed = 4200;
+		shoot_bullet_speed = 4300;
 	}
 	
 	
@@ -180,7 +177,7 @@ void Shoot_Run_Control()
 	Bullet_Block_Control();
 	
 	//热量限制（防止超热量）留出三颗弹丸余量，保证高射频下不超热量
-	if(game_robot_state.shooter_id1_17mm_cooling_limit < power_heat_data.shooter_id1_17mm_cooling_heat + 30)
+	if(game_robot_state.shooter_id1_17mm_cooling_limit - power_heat_data.shooter_id1_17mm_cooling_heat< 50)
 	{
 		Shoot_Speed = 0;
 	}

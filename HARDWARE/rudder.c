@@ -16,8 +16,8 @@ void Rudder_Init()
 	}
 	
 	//舵的初始角度标定
-	Encoder_Data_Process(&CAN_Rudder[0],4740);
-	Encoder_Data_Process(&CAN_Rudder[1],3450);
-	Encoder_Data_Process(&CAN_Rudder[2],6098);
-	Encoder_Data_Process(&CAN_Rudder[3],6150);
+	Encoder_Data_Process(&CAN_Rudder[0],6193);
+	Encoder_Data_Process(&CAN_Rudder[1],3470);
+	Encoder_Data_Process(&CAN_Rudder[2],6135);
+	Encoder_Data_Process(&CAN_Rudder[3],782);
 }

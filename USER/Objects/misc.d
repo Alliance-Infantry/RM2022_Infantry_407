@@ -2,7 +2,7 @@
 .\objects\misc.o: ..\FWLIB\inc\misc.h
 .\objects\misc.o: ..\USER\stm32f4xx.h
 .\objects\misc.o: ..\CORE\core_cm4.h
-.\objects\misc.o: D:\Soft\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\misc.o: E:\Soft\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\misc.o: ..\CORE\cmsis_version.h
 .\objects\misc.o: ..\CORE\cmsis_compiler.h
 .\objects\misc.o: ..\CORE\cmsis_armcc.h

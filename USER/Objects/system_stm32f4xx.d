@@ -1,7 +1,7 @@
 .\objects\system_stm32f4xx.o: system_stm32f4xx.c
 .\objects\system_stm32f4xx.o: stm32f4xx.h
 .\objects\system_stm32f4xx.o: ..\CORE\core_cm4.h
-.\objects\system_stm32f4xx.o: D:\Soft\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_stm32f4xx.o: E:\Soft\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\system_stm32f4xx.o: ..\CORE\cmsis_version.h
 .\objects\system_stm32f4xx.o: ..\CORE\cmsis_compiler.h
 .\objects\system_stm32f4xx.o: ..\CORE\cmsis_armcc.h

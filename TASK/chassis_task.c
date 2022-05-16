@@ -82,19 +82,19 @@ void chassis_task(void *p_arg)
 		}
 		
 		
-		if(Rudder_Signal <= 0 && CAN2_Signal >= 0 && Is_Rudder == false)
-		{
+//		if(Rudder_Signal <= 0 && CAN2_Signal >= 0 && Is_Rudder == false)
+//		{
 			//底盘速度解算
-			Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);		
-			Angle_Reverse_Handle();			
-		}
-		else
-		{
+//			Chassis_Speed_Calc(Chassis_Speed.vx,Chassis_Speed.vy,Chassis_Speed.vw);		
+//			Angle_Reverse_Handle();			
+//		}
+//		else
+//		{
 			Is_Rudder = true;
 			//舵轮速度解算
 			Chassis_Rudder_Nearby_Cal(rc.vx + keyboard.vx,rc.vy + keyboard.vy,0); //就近原则			
 
-		}
+//		}
 
 		
 
@@ -570,17 +570,17 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 		//则由340°- 170°判断是否大于90°
 		//调整目标为340 - 180 = 160°，然后轮子反向
     //此部分处理仅需要判断目标角度是否是经过调整后的新角度，如果是则需要反向，不是则保持原方向
-		if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] > 90.0*ANGLE_TO_RAD)
-		{
-			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] - 180.0*ANGLE_TO_RAD;
-			Rudder_Data.XYZ_Speed_Dir[i] = -1;
-		}
-		else if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] < -90.0*ANGLE_TO_RAD)
-		{
-			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] + 180.0*ANGLE_TO_RAD;			
-			Rudder_Data.XYZ_Speed_Dir[i] = -1;
-		}
-		else
+//		if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] > 90.0*ANGLE_TO_RAD)
+//		{
+//			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] - 180.0*ANGLE_TO_RAD;
+//			Rudder_Data.XYZ_Speed_Dir[i] = -1;
+//		}
+//		else if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] < -90.0*ANGLE_TO_RAD)
+//		{
+//			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] + 180.0*ANGLE_TO_RAD;			
+//			Rudder_Data.XYZ_Speed_Dir[i] = -1;
+//		}
+//		else
 		{
 			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i];
 			Rudder_Data.XYZ_Speed_Dir[i] = 1;

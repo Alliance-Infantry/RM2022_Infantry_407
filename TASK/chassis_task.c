@@ -451,21 +451,29 @@ float Chassis_Power_Up = 100.0f;
 //底盘舵轮就近原则解算
 void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 {
+	//底盘跟随云台
 	if(Chassis_Mode == CHASSIS_MODE_FOLLOW)
 	{
 		Chassis_Rudder_Rotate_Speed = Pid_Calc(&PID_Chassis_Omega,(CAN_Gimbal[0].Current_MechAngle - Init_Angle)/8192.0*360.0f, 0);
+		if(abs(Chassis_Rudder_Rotate_Speed)< 200)
+		{
+			Chassis_Rudder_Rotate_Speed = 0;
+		}
 	}
+	//自瞄状态下取消跟随
 	else if(Chassis_Mode == CHASSIS_MODE_AUTOAIM)
 	{
 		Chassis_Rudder_Rotate_Speed = 0;
 	}
+	//其余模式，即小陀螺模式，转速随功率上限进行变化
 	else
 	{
 		Chassis_Rudder_Rotate_Speed = game_robot_state.chassis_power_limit / Chassis_Power_Up * 6000;
 	}
 	
-	//XY平面初始速度夹角 y除以x
+	//XY平面初始速度夹角 vy除以vx
 	//弧度（-PI -- PI）
+	//这部分只有遥控器右边控制任意方向平移时有效，与云台转角无关
 	if(vx == 0)
 	{
 		if(vy > 0)
@@ -487,12 +495,14 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 	}
 	
 	//Yaw轴电机偏差角
+	//即Yaw轴转角
 	//弧度（-PI -- PI）
 	Rudder_Data.Yaw_Angle_Offset = (Init_Angle - CAN_Gimbal[0].Current_MechAngle) / 8192.0f * 360.0f * ANGLE_TO_RAD; 
 	
 	
 	//XY平面真实速度夹角（原始XY速度夹角）
 	//未陀螺时舵的朝向角
+	//即XY平移速度合成方向与Yaw偏移角叠加
 	Rudder_Data.XY_Angle_Real = Rudder_Data.XY_Angle_Origin + Rudder_Data.Yaw_Angle_Offset;
 	
   //XY平面速度计算，平方和开根号
@@ -508,9 +518,10 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 	//A,B方向向量，含速度大小与方向
 		for(int i =0;i<4;i++)
 	{
-		Rudder_Data.Z_Angle_Sin = arm_sin_f32((45 + i*90)*ANGLE_TO_RAD);
-		Rudder_Data.Z_Angle_Cos = arm_cos_f32((45 + i*90)*ANGLE_TO_RAD);
 		
+		Rudder_Data.Z_Angle_Sin = arm_sin_f32((45 + i*90)*ANGLE_TO_RAD);
+		Rudder_Data.Z_Angle_Cos = arm_cos_f32((45 + i*90)*ANGLE_TO_RAD);	
+
 		//舵向角反正切分子分母
 		Rudder_Data.XYZ_Angle_A[i] = Chassis_Rudder_Rotate_Speed * (Rudder_Data.Z_Angle_Sin) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Sin;
 		Rudder_Data.XYZ_Angle_B[i] = Chassis_Rudder_Rotate_Speed * (Rudder_Data.Z_Angle_Cos) + Rudder_Data.XY_Speed * Rudder_Data.XY_Angle_Real_Cos;
@@ -518,7 +529,11 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 		//分母为0时的处理
 		if(Rudder_Data.XYZ_Angle_B[i] == 0)
 		{
-			Rudder_Data.XYZ_Angle[i] = (45 + i*90)*ANGLE_TO_RAD;
+				//此处试刹车用途，即既没有紫轩又没有平移速度时保持轮子内八抱死
+//			Rudder_Data.XYZ_Angle[i] = (45 + i*90)*ANGLE_TO_RAD;	
+				//此处为偏心舵轮刹车时保持上一时刻角度，上一时刻速度肯定存在自旋，那么肯定会有内八状态角度存在
+				Rudder_Data.XYZ_Angle[i] = Rudder_Data.XYZ_Angle[i];			
+
 		}
 		else
 		{
@@ -564,32 +579,38 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle[i];
 		}
 		
-		//假如当前170°，目标-20°，
-		//先通过上面的跳变运算，得出目标为 -20 + 360 = 340° 
-		//就近原则下我则应该调整为160°，轮子反向
-		//则由340°- 170°判断是否大于90°
-		//调整目标为340 - 180 = 160°，然后轮子反向
-    //此部分处理仅需要判断目标角度是否是经过调整后的新角度，如果是则需要反向，不是则保持原方向
-//		if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] > 90.0*ANGLE_TO_RAD)
-//		{
-//			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] - 180.0*ANGLE_TO_RAD;
-//			Rudder_Data.XYZ_Speed_Dir[i] = -1;
-//		}
-//		else if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] < -90.0*ANGLE_TO_RAD)
-//		{
-//			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] + 180.0*ANGLE_TO_RAD;			
-//			Rudder_Data.XYZ_Speed_Dir[i] = -1;
-//		}
-//		else
-		{
-			Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i];
-			Rudder_Data.XYZ_Speed_Dir[i] = 1;
-		}
+		
+		//舵向就近原则
+		//注掉就去除了，解开注释即打开就近原则舵转向与轮反向
+		
+			//假如当前170°，目标-20°，
+			//先通过上面的跳变运算，得出目标为 -20 + 360 = 340° 
+			//就近原则下我则应该调整为160°，轮子反向
+			//则由340°- 170°判断是否大于90°
+			//调整目标为340 - 180 = 160°，然后轮子反向
+			//此部分处理仅需要判断目标角度是否是经过调整后的新角度，如果是则需要反向，不是则保持原方向
+//			if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] > 90.0*ANGLE_TO_RAD)
+//			{
+//				Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] - 180.0*ANGLE_TO_RAD;
+//				Rudder_Data.XYZ_Speed_Dir[i] = -1;
+//			}
+//			else if(Rudder_Data.XYZ_Angle_Target[i] - Rudder_Data.XYZ_Angle_Current[i] < -90.0*ANGLE_TO_RAD)
+//			{
+//				Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i] + 180.0*ANGLE_TO_RAD;			
+//				Rudder_Data.XYZ_Speed_Dir[i] = -1;
+//			}
+//			else
+			{
+				Rudder_Data.XYZ_Angle_Target[i] = Rudder_Data.XYZ_Angle_Target[i];
+				Rudder_Data.XYZ_Speed_Dir[i] = 1;
+			}		
+
+
 		
     //舵向角PID计算
 		PID_Rudder_Angle[i].PIDout = Pid_Calc(&PID_Rudder_Angle[i],Rudder_Data.XYZ_Angle_Current[i],Rudder_Data.XYZ_Angle_Target[i]);
 		CAN_Rudder[i].Target_Current = Pid_Calc(&PID_Rudder_Speed[i],CAN_Rudder[i].Current_Speed,PID_Rudder_Angle[i].PIDout);
-		
+//		
 		//记录上次舵向角
 		Rudder_Data.XYZ_Angle_Last[i] = Rudder_Data.XYZ_Angle[i];
 	}	

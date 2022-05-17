@@ -455,7 +455,7 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 	if(Chassis_Mode == CHASSIS_MODE_FOLLOW)
 	{
 		Chassis_Rudder_Rotate_Speed = Pid_Calc(&PID_Chassis_Omega,(CAN_Gimbal[0].Current_MechAngle - Init_Angle)/8192.0*360.0f, 0);
-		if(abs(Chassis_Rudder_Rotate_Speed)< 200)
+		if(abs(Chassis_Rudder_Rotate_Speed)< 500)
 		{
 			Chassis_Rudder_Rotate_Speed = 0;
 		}
@@ -530,6 +530,10 @@ void Chassis_Rudder_Nearby_Cal(float vx,float vy,float vw)
 		if(Rudder_Data.XYZ_Angle_B[i] == 0)
 		{
 				//此处试刹车用途，即既没有紫轩又没有平移速度时保持轮子内八抱死
+//				if(fabs(Rudder_Data.XYZ_Angle[i]) < 90)
+//				{
+//					Rudder_Data.XYZ_Angle[i] = (45 + i*90)*ANGLE_TO_RAD;
+//				}
 //			Rudder_Data.XYZ_Angle[i] = (45 + i*90)*ANGLE_TO_RAD;	
 				//此处为偏心舵轮刹车时保持上一时刻角度，上一时刻速度肯定存在自旋，那么肯定会有内八状态角度存在
 				Rudder_Data.XYZ_Angle[i] = Rudder_Data.XYZ_Angle[i];			
